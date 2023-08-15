@@ -1,0 +1,10 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.noteRouter = void 0;
+const express_1 = require("express");
+const controllers_1 = require("../controllers");
+const middlewares_1 = require("../middlewares");
+const router = (0, express_1.Router)();
+router.post('/create', middlewares_1.AuthMiddleware.isAuthorized, middlewares_1.NoteMiddleware.isNoteExists, controllers_1.NoteController.createNote);
+router.get('/:key', middlewares_1.AuthMiddleware.isAuthorized, middlewares_1.NoteMiddleware.isKeyValid, controllers_1.NoteController.getByAccessKey);
+exports.noteRouter = router;
