@@ -1,9 +1,10 @@
 "use client"
 
+import {useState} from "react";
+import { Grid } from "@mui/material";
+
 import GetNoteForm from "@/components/GetNoteForm";
 import SingleNote from "@/components/SingleNote";
-import { Grid } from "@mui/material";
-import {useState} from "react";
 
 export default function Notes(){
     const [note, setNote] = useState({title: "", body: ""});

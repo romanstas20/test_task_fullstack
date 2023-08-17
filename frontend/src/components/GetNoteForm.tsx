@@ -1,58 +1,95 @@
-'use client'
-import {Alert, Box, Button, Snackbar, TextField} from "@mui/material";
-import {getNote} from "@/services/DataServices";
+"use client"
+import React, {useState} from "react";
 import {useFormik} from "formik";
-import * as Yup from "Yup";
-import {useState} from "react";
+import * as Yup from "yup";
+import {Alert, Box, Button, Snackbar, TextField} from "@mui/material";
 
+import {getNote} from "@/services/DataServices";
+import {useLogout} from "@/hooks/useLogout";
 
-export default function GetNoteForm({setNote}) {
+interface Note {
+    title: string;
+    body: string;
+}
 
-    const [alert, setAlert] = useState({
+interface GetNoteFormProps {
+    setNote: React.Dispatch<React.SetStateAction<Note>>;
+}
+
+export default function GetNoteForm({ setNote }: GetNoteFormProps) {
+
+    const {logout} = useLogout();
+
+    const [alert, setAlert] = useState<{
+        isShow: boolean;
+        type: "success" | "error";
+        message: string;
+    }>({
         isShow: false,
         type: "success",
         message: "",
     });
 
-    const handleOpenAlert = (type, message) => {
-        setAlert({isShow: true, type: type, message});
+    const handleOpenAlert = (type: "success" | "error", message: string) => {
+        setAlert({ isShow: true, type: type, message });
         setTimeout(() => {
-            setAlert({isShow: false, type: type, message})
+            setAlert({ isShow: false, type: type, message });
         }, 3500);
     };
 
-    const {values, handleChange, handleBlur, isSubmitting, touched, errors, handleSubmit, isValid} = useFormik({
+    const handleGetNote = async (data: string) => {
+        return await getNote(data);
+    };
+
+    const {
+        values,
+        handleChange,
+        handleBlur,
+        isSubmitting,
+        touched,
+        errors,
+        handleSubmit,
+        isValid,
+        resetForm,
+    } = useFormik({
         initialValues: {
-            accessKey: '',
-            submit: null
+            accessKey: "",
         },
         validationSchema: Yup.object({
             accessKey: Yup.string()
-                .min(5, 'The secret key length 5 characters')
-                .max(5, 'The secret key length 5 characters')
-                .required('The secret key is required'),
+                .min(5, "The secret key length must be 5 characters")
+                .max(5, "The secret key length must be 5 characters")
+                .required("The secret key is required"),
         }),
-        onSubmit: async (values, {resetForm}) => {
+        onSubmit: async (values) => {
             try {
-                setNote(await getNote(values.accessKey));
-                handleOpenAlert("success", "Secret key is right");
+                const note = await handleGetNote(values.accessKey);
+                setNote(note);
+                handleOpenAlert("success", "Secret key is correct");
             } catch (e) {
-                setNote({title: "", body: ""});
+                if(e.response.data.message === "jwt malformed"){
+                    logout();
+                }
+                setNote({
+                    title: "",
+                    body: "",
+                });
                 handleOpenAlert("error", e.response.data.message);
             } finally {
                 resetForm();
             }
-        }
+        },
     });
-    return (
 
+    return (
         <>
             <form onSubmit={handleSubmit}>
-                <Box sx={{
-                    display: 'flex',
-                    flexDirection: 'column'
-                }}>
-
+                <Box
+                    sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                    }}
+                >
                     <TextField
                         error={Boolean(touched.accessKey && errors.accessKey)}
                         helperText={touched.accessKey && errors.accessKey}
@@ -62,29 +99,25 @@ export default function GetNoteForm({setNote}) {
                         name={"accessKey"}
                         label="Secret Key"
                         placeholder="Enter note secret key"
-                        sx={{marginBottom: 1}}
+                        sx={{ marginBottom: 1 }}
                     />
-                    <Button type="submit"
-                            variant={"contained"}
-                            disabled={isSubmitting || !isValid}>
+                    <Button
+                        type="submit"
+                        variant="contained"
+                        disabled={isSubmitting || !isValid}
+                    >
                         Get Note
                     </Button>
                 </Box>
             </form>
             <Snackbar
                 open={alert.isShow}
-                anchorOrigin={{vertical: "bottom", horizontal: "right"}}
+                anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
             >
-                <Alert
-                    severity={alert.type}
-                    sx={{width: "100%"}}
-                >
+                <Alert severity={alert.type} sx={{ width: "100%" }}>
                     {alert.message}
                 </Alert>
             </Snackbar>
-
         </>
-
-
-    )
+    );
 }

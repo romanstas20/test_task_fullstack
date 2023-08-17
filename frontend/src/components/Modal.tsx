@@ -1,5 +1,5 @@
-import { Modal as MuiModal, Box, Button, Paper } from "@mui/material";
-import { ReactElement, ReactNode } from "react";
+import { Modal as MuiModal, Box, Button } from "@mui/material";
+import { ReactElement } from "react";
 import { grey } from "@mui/material/colors";
 
 interface ModalProps {

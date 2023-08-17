@@ -1,6 +1,7 @@
 import React from 'react';
-import AuthForm from "@/components/AuthFrom";
 import {Box} from "@mui/material";
+
+import AuthForm from "@/components/AuthForm";
 
 const SignIn = () => {
     return (
