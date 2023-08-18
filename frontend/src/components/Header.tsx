@@ -7,6 +7,7 @@ import NextLink from "next/link";
 
 import { instructions } from "@/data/instructions";
 import Modal from "./Modal";
+import {useLogout} from "@/hooks/useLogout";
 
 interface InstructionStep {
     stepNumber: number;
@@ -16,7 +17,7 @@ interface InstructionStep {
 export default function Header() {
     const [openInstr, setOpenInstr] = useState(false);
     const modalHandler = () => setOpenInstr(!openInstr);
-
+    const {logout} = useLogout()
     return (
         <>
             <Box sx={{
@@ -34,13 +35,22 @@ export default function Header() {
                         <Typography>Notes</Typography>
                     </Link>
                 </Box>
-                <Button
-                    color="primary"
-                    variant="contained"
-                    onClick={modalHandler}
-                >
-                    INSTRUCTION
-                </Button>
+                <Box sx={{display: "flex", gap: "10px"}}>
+                    <Button
+                        color="primary"
+                        variant="contained"
+                        onClick={modalHandler}
+                    >
+                        INSTRUCTION
+                    </Button>
+                    <Button
+                        color="primary"
+                        variant="contained"
+                        onClick={logout}
+                    >
+                        Log Out
+                    </Button>
+                </Box>
             </Box>
             <Modal open={openInstr} closeModal={modalHandler} closeBtnText="Got it">
                 <Typography variant="h4" textAlign='center'>Instruction</Typography>
