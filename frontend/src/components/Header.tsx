@@ -1,27 +1,24 @@
 'use client'
-import React, { useState } from "react";
-import { Box, Button, List, ListItem, Typography, Link } from "@mui/material";
-import { grey } from "@mui/material/colors";
+import React, {ReactNode, useState} from "react";
+import {Box, Button, Link, List, ListItem, Typography} from "@mui/material";
+import {grey} from "@mui/material/colors";
 import NoteAltIcon from '@mui/icons-material/NoteAlt';
 import NextLink from "next/link";
 
-import { instructions } from "@/data/instructions";
+import {instructions} from "@/data/instructions";
 import Modal from "./Modal";
 import {useLogout} from "@/hooks/useLogout";
+import {IInstructionStep} from "@/interfaces";
 
-interface InstructionStep {
-    stepNumber: number;
-    description: string;
-}
-
-export default function Header() {
+export default function Header({children}: { children: ReactNode }) {
     const [openInstr, setOpenInstr] = useState(false);
+
     const modalHandler = () => setOpenInstr(!openInstr);
-    const {logout} = useLogout()
+    const {logout} = useLogout();
     return (
         <>
             <Box sx={{
-                display: 'flex',
+                display: "flex",
                 justifyContent: 'space-between',
                 alignItems: 'center',
                 padding: 1,
@@ -55,13 +52,14 @@ export default function Header() {
             <Modal open={openInstr} closeModal={modalHandler} closeBtnText="Got it">
                 <Typography variant="h4" textAlign='center'>Instruction</Typography>
                 <List>
-                    {instructions.map(({ stepNumber, description }: InstructionStep) => (
+                    {instructions.map(({stepNumber, description}: IInstructionStep) => (
                         <ListItem key={stepNumber}>
                             <Typography>{`${stepNumber}. ${description}`}</Typography>
                         </ListItem>
                     ))}
                 </List>
             </Modal>
+            {children}
         </>
     );
 }

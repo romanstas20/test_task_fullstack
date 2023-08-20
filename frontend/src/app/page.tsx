@@ -1,22 +1,28 @@
 import {Box, Typography} from '@mui/material'
-import NotesForm from '@/components/NotesForm'
 
-export default function Home() {
+import NotesForm from '@/components/NotesForm'
+import Header from "@/components/Header";
+
+function Home() {
 
     return (
-        <Box sx={{
-            display: 'flex',
-            justifyContent: 'center',
-            flexDirection: 'column',
-            alignItems: ' center'
-        }}>
+        <Header>
             <Box sx={{
-                textAlign: 'center'
+                display: 'flex',
+                justifyContent: 'center',
+                flexDirection: 'column',
+                alignItems: ' center'
             }}>
-                <Typography variant='h3'>IncognitoNotes: Your Anonymous Memoir</Typography>
-                <Typography>Unveil Anonymity, Embrace Privacy</Typography>
+                <Box sx={{
+                    textAlign: 'center'
+                }}>
+                    <Typography variant='h4'>IncognitoNotes: Your Anonymous Memoir</Typography>
+                    <Typography variant='h5'>Unveil Anonymity, Embrace Privacy</Typography>
+                </Box>
+                <NotesForm/>
             </Box>
-            <NotesForm/>
-        </Box>
+        </Header>
     )
 }
+
+export default Home;

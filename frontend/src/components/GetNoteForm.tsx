@@ -2,21 +2,14 @@
 import React, {useState} from "react";
 import {useFormik} from "formik";
 import * as Yup from "yup";
-import {Alert, Box, Button, Snackbar, TextField} from "@mui/material";
+import {Alert, Box, Button, Grid, Snackbar, TextField} from "@mui/material";
 
 import {getNote} from "@/services/DataServices";
 import {useLogout} from "@/hooks/useLogout";
+import {IGetNoteFormProps} from "@/interfaces";
 
-interface Note {
-    title: string;
-    body: string;
-}
 
-interface GetNoteFormProps {
-    setNote: React.Dispatch<React.SetStateAction<Note>>;
-}
-
-export default function GetNoteForm({ setNote }: GetNoteFormProps) {
+export default function GetNoteForm({setNote}: IGetNoteFormProps) {
 
     const {logout} = useLogout();
 
@@ -31,9 +24,9 @@ export default function GetNoteForm({ setNote }: GetNoteFormProps) {
     });
 
     const handleOpenAlert = (type: "success" | "error", message: string) => {
-        setAlert({ isShow: true, type: type, message });
+        setAlert({isShow: true, type: type, message});
         setTimeout(() => {
-            setAlert({ isShow: false, type: type, message });
+            setAlert({isShow: false, type: type, message});
         }, 3500);
     };
 
@@ -66,8 +59,8 @@ export default function GetNoteForm({ setNote }: GetNoteFormProps) {
                 const note = await handleGetNote(values.accessKey);
                 setNote(note);
                 handleOpenAlert("success", "Secret key is correct");
-            } catch (e) {
-                if(e.response.data.message === "jwt malformed"){
+            } catch (e: any) {
+                if (e.response.data.message === "jwt malformed") {
                     logout();
                 }
                 setNote({
@@ -82,7 +75,7 @@ export default function GetNoteForm({ setNote }: GetNoteFormProps) {
     });
 
     return (
-        <>
+        <Grid item xs={12} md={8} lg={6}>
             <form onSubmit={handleSubmit}>
                 <Box
                     sx={{
@@ -98,8 +91,7 @@ export default function GetNoteForm({ setNote }: GetNoteFormProps) {
                         onChange={handleChange}
                         name={"accessKey"}
                         label="Secret Key"
-                        placeholder="Enter note secret key"
-                        sx={{ marginBottom: 1 }}
+                        sx={{marginBottom: 1}}
                     />
                     <Button
                         type="submit"
@@ -112,12 +104,12 @@ export default function GetNoteForm({ setNote }: GetNoteFormProps) {
             </form>
             <Snackbar
                 open={alert.isShow}
-                anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+                anchorOrigin={{vertical: "bottom", horizontal: "right"}}
             >
-                <Alert severity={alert.type} sx={{ width: "100%" }}>
+                <Alert severity={alert.type} sx={{width: "100%"}}>
                     {alert.message}
                 </Alert>
             </Snackbar>
-        </>
+        </Grid>
     );
 }

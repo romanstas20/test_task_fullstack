@@ -1,8 +1,8 @@
 import axios from "axios";
-
 import {apiDataBaseUrl, headersToken} from "@/config/config";
+import {IAuth, INote} from "@/interfaces";
 
-export const signIn = async (data) => {
+export const signIn = async (data: IAuth) => {
     const {data: response} = await axios.post(
         `${apiDataBaseUrl}/auth/login`,
         data
@@ -10,7 +10,7 @@ export const signIn = async (data) => {
     return response;
 };
 
-export const signUp = async (data) => {
+export const signUp = async (data: IAuth) => {
     const {data: response} = await axios.post(
         `${apiDataBaseUrl}/auth/register`,
         data
@@ -18,7 +18,7 @@ export const signUp = async (data) => {
     return response;
 };
 
-export const createNote = async (data) => {
+export const createNote = async (data: INote) => {
     const {data: response} = await axios.post(
         `${apiDataBaseUrl}/notes/create`,
         data,
@@ -27,7 +27,7 @@ export const createNote = async (data) => {
     return response;
 };
 
-export const getNote = async (accessKey) => {
+export const getNote = async (accessKey: string) => {
     const {data: response} = await axios.get(
         `${apiDataBaseUrl}/notes/${accessKey}`,
         {...headersToken()}

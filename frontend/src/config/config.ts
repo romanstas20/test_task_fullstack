@@ -6,11 +6,11 @@ export const headersToken = () => {
     const cookies = new Cookies();
     const token = cookies.get('token');
 
-        return {
-            headers: {
-                Authorization: `${token}`
-            }
+    return {
+        headers: {
+            Authorization: `${token}`
         }
+    }
 
 
 };
