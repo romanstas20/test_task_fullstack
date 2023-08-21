@@ -1,20 +1,21 @@
-import {Router} from 'express';
+import { Router } from 'express'
 
-import {NoteController} from "../controllers"
-import {AuthMiddleware, CommonMiddleware, NoteMiddleware} from "../middlewares";
-import {Note} from "../models";
+import { NoteController } from '../controllers'
+import { AuthMiddleware, NoteMiddleware } from '../middlewares'
 
-const router = Router();
+const router = Router()
 
-router.post('/create',
+router.post(
+    '/create',
     AuthMiddleware.isAuthorized,
     NoteMiddleware.isNoteExists,
     NoteController.createNote
-);
-router.get('/:key',
+)
+router.get(
+    '/:key',
     AuthMiddleware.isAuthorized,
     NoteMiddleware.isKeyValid,
     NoteController.getByAccessKey
-);
+)
 
-export const noteRouter = router;
+export const noteRouter = router

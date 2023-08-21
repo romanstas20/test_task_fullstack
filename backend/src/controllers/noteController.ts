@@ -1,24 +1,34 @@
-import {Request, Response, NextFunction} from "express"
-import {INote} from "../types"
-import {NoteServices} from "../services";
-import {ApiError} from "../apiError";
+import { NextFunction, Request, Response } from 'express'
+
+import { NoteServices } from '../services'
+import { INote } from '../types'
 
 export class NoteController {
-    public static async createNote(req: Request, res: Response, next: NextFunction) {
+    public static async createNote(
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ) {
         try {
-            const userId: string = res.locals.userId;
-            const {title, body} = await NoteServices.createNote(req.body as INote, userId);
-            return res.json({title, body});
+            const userId: string = res.locals.userId
+            const { title, body } = await NoteServices.createNote(
+                req.body as INote,
+                userId
+            )
+            return res.json({ title, body })
         } catch (e) {
             next(e)
         }
     }
 
-    public static async getByAccessKey(req: Request, res: Response, next: NextFunction): Promise<Response<INote>> {
+    public static async getByAccessKey(
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ): Promise<Response<INote>> {
         try {
-            const {key: accessKey} = req.params
-            const {title, body} = res.locals.note;
-            return res.json({title, body});
+            const { title, body } = res.locals.note
+            return res.json({ title, body })
         } catch (e) {
             next(e)
         }

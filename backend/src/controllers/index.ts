@@ -1,2 +1,2 @@
-export * from "./noteController";
-export * from "./authController"
+export * from './noteController'
+export * from './authController'

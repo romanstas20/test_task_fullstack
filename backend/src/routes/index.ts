@@ -1,2 +1,2 @@
-export * from "./noteRouter";
-export * from "./authRouter";
+export * from './noteRouter'
+export * from './authRouter'

@@ -1,22 +1,29 @@
-import {Schema, model} from "mongoose"
+import { model, Schema, Types } from 'mongoose'
 
-const noteSchema = new Schema({
-    title: {
-        type: String,
-        required: true
+const noteSchema = new Schema(
+    {
+        title: {
+            type: String,
+            required: true,
+        },
+        body: {
+            type: String,
+            required: true,
+        },
+        accessKey: {
+            type: String,
+            required: true,
+            unique: true,
+        },
+        userId: {
+            type: Types.ObjectId,
+            required: true,
+        },
     },
-    body: {
-        type: String,
-        required: true
-    },
-    accessKey: {
-        type: String,
-        required: true,
-        unique: true
+    {
+        versionKey: false,
+        timestamps: true,
     }
-}, {
-    versionKey: false,
-    timestamps: true
-});
+)
 
-export const Note = model("notes", noteSchema)
+export const Note = model('notes', noteSchema)
