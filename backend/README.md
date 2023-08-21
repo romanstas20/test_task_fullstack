@@ -19,10 +19,10 @@ Project is created with:
 
 ## Endpoints
 
-- /auth/login (username: string, password: string)
-- /auth/register (username: string, password (At least 8 characters, one number, one letter and one capital letter))
-- /notes/create (title: string, body: string, accessKey: string)
-- /notes/:key (key - note's accessKey)
+- POST /auth/login (username: string, password: string)
+- POST /auth/register (username: string, password (At least 8 characters, one number, one letter and one capital letter))
+- POST /notes/create (title: string, body: string, accessKey: string)
+- GET /notes/:key (key - note's accessKey)
 
 ## Setup
 
